@@ -5,9 +5,10 @@
 var express = require("express");
 var morgan = require("morgan");
 var mongoose = require("mongoose");
-var User = require("./app/models/user");
 var bodyParser = require("body-parser");
-
+var router = express.Router();
+var appRoutes = require("./app/models/routes/api")(router);
+var path = require("path");
 /************************************ MonogDB Config Area **************************/
 
 // connect to mongodb & listen for requests
@@ -29,42 +30,18 @@ mongoose
 
 // Invoke the express and place it in app variable
 var app = express();
+
+app.use(morgan("dev"));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
-
-app.use(morgan("dev"));
-
+app.use(express.static(__dirname + "/public"));
+app.use("/api", appRoutes);
 /****************************** Request Area  ******************************************/
 
-//http://localhost:8080/users
-app.post("/users", function (req, res) {
-  var user = new User();
-
-  user.username = req.body.username;
-  user.password = req.body.password;
-  user.email = req.body.email;
-
-  if (
-    user.username === null ||
-    user.username === "" ||
-    user.password == null ||
-    user.password == "" ||
-    user.email == null ||
-    user.email == ""
-  ) {
-    res.send("Ensure username, password and email must be enterd !");
-  } else {
-    user.save(function (err) {
-      if (err) {
-        res.send("User or Email already exists !!");
-      } else {
-        res.send("user created");
-      }
-    });
-  }
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname + "/app/models/public/app/view/index.html"));
 });
-
 // Setting up the port number
 var port = process.env.PORT || 8080;
