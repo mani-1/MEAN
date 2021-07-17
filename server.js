@@ -41,7 +41,7 @@ app.use("/api", appRoutes);
 /****************************** Request Area  ******************************************/
 
 app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname + "/app/models/public/app/view/index.html"));
+  res.sendFile(path.join(__dirname + "/app/models/public/app/index.html"));
 });
 // Setting up the port number
 var port = process.env.PORT || 8080;
