@@ -36,11 +36,11 @@ app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
-app.use(express.static(__dirname + "/public"));
+// app.use(express.static(__dirname + "/public"));
 app.use("/api", appRoutes);
 /****************************** Request Area  ******************************************/
 
-app.get("*", function (req, res) {
+app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname + "/app/models/public/app/index.html"));
 });
 // Setting up the port number
